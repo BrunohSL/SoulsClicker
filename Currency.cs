@@ -39,6 +39,26 @@ public class Currency {
         Value valueClass = new Value();
 
         if (totalSoulsScale != valueScale) {
+            int scaleDiff = totalSoulsScale - valueScale;
+
+            if (scaleDiff < -2 || scaleDiff > 2) {
+                Debug.Log("Diferença de scale é maior que 2");
+
+                if (scaleDiff > 0) {
+                    Debug.Log("Faz de conta que somou");
+                    valueClass.value = double.Parse(totalSouls.ToString("N3"));
+                    valueClass.scale = totalSoulsScale;
+
+                    return valueClass;
+                } else {
+                    Debug.Log("Considerando o adicionado como total");
+                    valueClass.value = value;
+                    valueClass.scale = valueScale;
+
+                    return valueClass;
+                }
+            }
+
             Debug.Log("diferente");
             if (totalSoulsScale > valueScale) {
                 if (totalSoulsScale > 0) {
@@ -73,6 +93,20 @@ public class Currency {
         Value valueClass = new Value();
 
         if (totalSoulsScale != valueScale) {
+            int scaleDiff = totalSoulsScale - valueScale;
+
+            if (scaleDiff < -2 || scaleDiff > 2) {
+                Debug.Log("Diferença de scale é maior que 2");
+
+                if (scaleDiff > 0) {
+                    Debug.Log("Faz de conta que subtraiu");
+                    valueClass.value = double.Parse(totalSouls.ToString("N3"));
+                    valueClass.scale = totalSoulsScale;
+
+                    return valueClass;
+                }
+            }
+
             if (totalSoulsScale > valueScale) {
                 if (totalSoulsScale > 0) {
                     totalSoulsScale--;

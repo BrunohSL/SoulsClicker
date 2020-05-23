@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour {
     private double multipliers;
     private float time = 1f;
+    // public Value totalProduction;
 
     public Currency currency;
 
@@ -92,23 +93,51 @@ public class GameController : MonoBehaviour {
 
             if (employee.level > 0) {
                 employee.image.enabled = true;
-                time -= Time.deltaTime;
-                if (time <= 0) {
-                    Value valueClass = currency.add(souls.totalSouls.value, souls.totalSouls.scale, employee.actualProduction.value, employee.actualProduction.scale);
-                    souls.totalSouls.value = valueClass.value;
-                    souls.totalSouls.scale = valueClass.scale;
-                    time = 1f;
-                }
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.S)) {
-            saveGame();
+        time -= Time.deltaTime;
+        if (time <= 0) {
+            Debug.Log("Gerou alma pelo funcionário");
+            Value totalProduction = getEmployeeTotalProduction();
+            // Debug.Log(totalProduction.value);
+            // Debug.Log(totalProduction.scale);
+            Value valueClass = currency.add(souls.totalSouls.value, souls.totalSouls.scale, totalProduction.value, totalProduction.scale);
+
+            if (totalProduction.value > 0) {
+                GameObject clickTextPrefabObj = Instantiate(clickTextPrefab, new Vector3(Random.Range(-20f, 100f), Random.Range(0f, 70f), 0f), Quaternion.identity);
+                clickTextPrefabObj.transform.SetParent(canvas.transform, false);
+                clickTextPrefabObj.GetComponent<Text>().text = "+ " + totalProduction.value.ToString("N2") + currency.suifx[souls.totalSouls.scale];
+            }
+
+            souls.totalSouls.value = valueClass.value;
+            souls.totalSouls.scale = valueClass.scale;
+            time = 1f;
         }
+
+        // if (Input.GetKeyDown(KeyCode.T)) {
+        //     time = 0;
+        // }
     }
 
     void FixedUpdate() {
         saveGame();
+    }
+
+    public Value getEmployeeTotalProduction() {
+        Value valueClass = new Value();
+
+        // totalProduction.value = 0;
+        // totalProduction.scale = 0;
+
+        foreach (Employees employee in employees) {
+            if (employee.level > 0) {
+                valueClass.value += employee.actualProduction.value;
+                valueClass.scale = 0;
+            }
+        }
+
+        return valueClass;
     }
 
     public void saveGame() {
@@ -201,7 +230,7 @@ public class GameController : MonoBehaviour {
 
         GameObject clickTextPrefabObj = Instantiate(clickTextPrefab, new Vector3(Random.Range(-20f, 100f), Random.Range(0f, 70f), 0f), Quaternion.identity);
         clickTextPrefabObj.transform.SetParent(canvas.transform, false);
-        clickTextPrefabObj.GetComponent<Text>().text = "+ " + click.actualProduction.value.ToString("N2");
+        clickTextPrefabObj.GetComponent<Text>().text = "+ " + click.actualProduction.value.ToString("N2") + currency.suifx[click.actualProduction.scale];
     }
 
     /**
