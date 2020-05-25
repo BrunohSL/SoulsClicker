@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour {
     private double multipliers;
     private float time = 1f;
-    // public Value totalProduction;
 
     public Currency currency;
 
@@ -54,8 +53,6 @@ public class GameController : MonoBehaviour {
     }
 
     void Update() {
-        soulsText.text = "Souls: " + souls.totalSouls.value.ToString("N2") + currency.suifx[souls.totalSouls.scale];
-
         checkForScaleChange();
 
         click.actualProductionText.text = click.actualProduction.value.ToString("N2");
@@ -96,12 +93,10 @@ public class GameController : MonoBehaviour {
             }
         }
 
-        // time -= Time.deltaTime;
+        time -= Time.deltaTime;
         if (time <= 0) {
             Debug.Log("Gerou alma pelo funcionário");
             Value totalProduction = getEmployeeTotalProduction();
-            // Debug.Log(totalProduction.value);
-            // Debug.Log(totalProduction.scale);
             Value valueClass = currency.add(souls.totalSouls.value, souls.totalSouls.scale, totalProduction.value, totalProduction.scale);
 
             if (totalProduction.value > 0) {
@@ -126,9 +121,6 @@ public class GameController : MonoBehaviour {
 
     public Value getEmployeeTotalProduction() {
         Value valueClass = new Value();
-
-        // totalProduction.value = 0;
-        // totalProduction.scale = 0;
 
         foreach (Employees employee in employees) {
             if (employee.level > 0) {
@@ -278,8 +270,6 @@ public class GameController : MonoBehaviour {
     public void levelUpClick() {
         Value valueClass = new Value();
 
-        valueClass = currency.subtract(souls.totalSouls.value, souls.totalSouls.scale, click.nextCost.value, click.nextCost.scale);
-
         if (valueClass == null) {
             Debug.Log("Valor negativo aqui (valor de custo do próximo upgrade é muito caro)");
         } else {
@@ -292,9 +282,6 @@ public class GameController : MonoBehaviour {
             click.nextProduction.value = double.Parse(getNextProductionRate(click.initialProduction, click.level));
             click.nextCost.value = double.Parse(getNextUpgradeCost(click.initialCost, click.growthRate, click.level));
         }
-
-        Debug.Log("souls.totalSouls.value: " + souls.totalSouls.value);
-        Debug.Log("souls.totalSouls.scale: " + souls.totalSouls.scale);
     }
 
     /**
@@ -344,5 +331,7 @@ public class GameController : MonoBehaviour {
             click.nextCost.value /= 1000000;
             click.nextCost.scale++;
         }
+
+        soulsText.text = "Souls: " + souls.totalSouls.value.ToString("N2") + currency.suifx[souls.totalSouls.scale];
     }
 }
