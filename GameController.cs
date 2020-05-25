@@ -96,7 +96,7 @@ public class GameController : MonoBehaviour {
             }
         }
 
-        time -= Time.deltaTime;
+        // time -= Time.deltaTime;
         if (time <= 0) {
             Debug.Log("Gerou alma pelo funcionário");
             Value totalProduction = getEmployeeTotalProduction();
@@ -255,6 +255,7 @@ public class GameController : MonoBehaviour {
             Debug.Log("Valor negativo aqui (valor de custo do próximo upgrade é muito caro)");
         } else {
             souls.totalSouls.value = valueClass.value;
+            souls.totalSouls.scale = valueClass.scale;
 
             employee.actualProduction.value = employee.nextProduction.value;
             employee.level++;
@@ -262,9 +263,6 @@ public class GameController : MonoBehaviour {
             employee.nextProduction.value = double.Parse(getNextProductionRate(employee.initialProduction, employee.level));
             employee.nextCost.value = double.Parse(getNextUpgradeCost(employee.initialCost, employee.growthRate, employee.level));
         }
-
-        Debug.Log("souls.totalSouls.value: " + souls.totalSouls.value);
-        Debug.Log("souls.totalSouls.scale: " + souls.totalSouls.scale);
     }
 
     /**

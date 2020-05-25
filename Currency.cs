@@ -93,6 +93,7 @@ public class Currency {
         Value valueClass = new Value();
 
         if (totalSoulsScale != valueScale) {
+            Debug.Log("Passou aqui");
             int scaleDiff = totalSoulsScale - valueScale;
 
             if (scaleDiff < -2 || scaleDiff > 2) {
@@ -122,15 +123,18 @@ public class Currency {
 
             return valueClass;
         } else {
+            Debug.Log("Scales iguais");
             if ((totalSouls - value) < 0) {
                 Debug.Log("Valor negativo aqui (scales iguais)");
                 return null;
             } else {
+                Debug.Log("Entrou aqui");
                 totalSouls -= value;
                 valueClass.value = totalSouls;
+                valueClass.scale = totalSoulsScale;
             }
-        }
 
-        return valueClass;
+            return valueClass;
+        }
     }
 }
