@@ -35,6 +35,16 @@ public class Currency {
         "z",
     };
 
+    /**
+     * Handles the sum of two values, uses the scale to make the sum
+     *
+     * @param double totalSouls    First value, this will receive the second parameter value
+     * @param int totalSoulsScale  First value scale, used to make the sum
+     * @param double value         Second value, this will be added to the first value
+     * @param int valueScale       Second value scale, used to make the sum
+     *
+     * @return Value valueClass    Return a instance of valueClass with the sum result of the two values
+     */
     public Value add(double totalSouls, int totalSoulsScale, double value, int valueScale) {
         Value valueClass = new Value();
 
@@ -89,6 +99,17 @@ public class Currency {
         }
     }
 
+    /**
+     * Handles the subtraction of two values, uses the scale to make the subtraction
+     *
+     * @param double totalSouls    First value, this will receive the second parameter value
+     * @param int totalSoulsScale  First value scale, used to make the subtraction
+     * @param double value         Second value, this will be added to the first value
+     * @param int valueScale       Second value scale, used to make the subtraction
+     *
+     * @return Value valueClass    Return a instance of valueClass with the subtraction result of the two values
+     * @return Value null          Return null if the subtraction result is lower than 0
+     */
     public Value subtract(double totalSouls, int totalSoulsScale, double value, int valueScale) {
         Value valueClass = new Value();
 

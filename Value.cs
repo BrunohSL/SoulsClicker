@@ -6,4 +6,5 @@ using UnityEngine;
 public class Value {
     public double value;
     public int scale;
+    public double multiplier;
 }

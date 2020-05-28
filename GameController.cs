@@ -4,11 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
-    private double multipliers;
     private float time = 1f;
 
-    public Currency currency;
+    public string lastTimeOnline;
 
+    public Value offlineEarnings;
+    public GameObject offlineEarningText;
+    public GameObject offlineEarningPanel;
+
+    public Currency currency;
     public Souls souls;
     public Click click;
     public Employees[] employees;
@@ -18,6 +22,10 @@ public class GameController : MonoBehaviour {
 
     void Start() {
         PlayerData data = SaveController.loadGame();
+
+        offlineEarningText = GameObject.FindGameObjectWithTag("offlineEarningText");
+        offlineEarningPanel = GameObject.FindGameObjectWithTag("offlineEarningPanel");
+        offlineEarningPanel.SetActive(false);
 
         if (data == null) {
             foreach (Employees employee in employees) {
@@ -39,6 +47,22 @@ public class GameController : MonoBehaviour {
             }
         } else {
             loadGame(data);
+
+            string currentTime = System.DateTime.Now.ToString();
+            string diffInSeconds = (System.DateTime.Parse(currentTime) - System.DateTime.Parse(lastTimeOnline)).TotalSeconds.ToString();
+            Value actualProduction = getEmployeeTotalProduction();
+            offlineEarnings.value = double.Parse(diffInSeconds) * actualProduction.value;
+            offlineEarnings.scale = actualProduction.scale;
+
+            while (offlineEarnings.value > 1000000) {
+                offlineEarnings.value /= 1000000;
+                offlineEarnings.scale++;
+            }
+
+            offlineEarningPanel.SetActive(true);
+            offlineEarningText.GetComponent<Text>().text = "You earned " + offlineEarnings.value.ToString("N2") + currency.suifx[offlineEarnings.scale] + " souls while offline";
+
+            Debug.Log("Add a unity ads to earn more souls");
         }
 
         foreach (Employees employee in employees) {
@@ -110,15 +134,48 @@ public class GameController : MonoBehaviour {
             time = 1f;
         }
 
-        // if (Input.GetKeyDown(KeyCode.T)) {
-        //     time = 0;
-        // }
+        debug();
     }
 
     void FixedUpdate() {
         saveGame();
     }
 
+    void debug() {
+        if (Input.GetKeyDown(KeyCode.T)) {
+            string today = System.DateTime.Now.ToString();
+
+            Debug.Log("today: " + today);
+
+            string tomorrow = System.DateTime.Parse(today).AddDays(1).ToString();
+
+            Debug.Log("tomorrow: " + tomorrow);
+
+            var diffInSeconds = (System.DateTime.Parse(tomorrow) - System.DateTime.Parse(today)).TotalSeconds;
+
+            Debug.Log("diffInSeconds: " + diffInSeconds);
+        }
+    }
+
+    /**
+     * Handles the button to close the pop up of offline earnings
+     * If closed, gives the player the offline amount
+     * If the player watch the ads give the value * 2 (NOT IMPLEMENTED YET)
+     */
+    public void closeOfflineEarnings() {
+        Value valueClass = new Value();
+
+        valueClass = currency.add(souls.totalSouls.value, souls.totalSouls.scale, offlineEarnings.value, offlineEarnings.scale);
+
+        souls.totalSouls.value = valueClass.value;
+        souls.totalSouls.scale = valueClass.scale;
+
+        offlineEarningPanel.SetActive(false);
+    }
+
+    /**
+     * Run through the employees array and return the sum of all employees actual production values
+     */
     public Value getEmployeeTotalProduction() {
         Value valueClass = new Value();
 
@@ -132,10 +189,16 @@ public class GameController : MonoBehaviour {
         return valueClass;
     }
 
+    /**
+     * Send the game data to be saved in a binary file
+     */
     public void saveGame() {
         SaveController.saveGame(this);
     }
 
+    /**
+     * Assign the data from the last save file to the game
+     */
     public void loadGame(PlayerData data) {
         souls.totalSouls.value = data.totalSoulsValue;
         souls.totalSouls.scale = data.totalSoulsScale;
@@ -150,6 +213,8 @@ public class GameController : MonoBehaviour {
         click.nextProduction.scale = data.click_nextProductionScale;
         click.nextCost.value = data.click_nextCostValue;
         click.nextCost.scale = data.click_nextCostScale;
+
+        lastTimeOnline = data.lastTimeOnline;
 
         int counter = 0;
         foreach (var employee in employees) {
@@ -301,6 +366,9 @@ public class GameController : MonoBehaviour {
         return null;
     }
 
+    /**
+     * Handles the transition in scale of values
+     */
     public void checkForScaleChange() {
         if (souls.totalSouls.value > 1000000) {
             Debug.Log("souls.totalSouls Scale up");

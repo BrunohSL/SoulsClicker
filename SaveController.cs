@@ -6,7 +6,6 @@ public static class SaveController{
     public static void saveGame(GameController gameController) {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Path.Combine(Application.persistentDataPath, "player.save");
-        // string path = Application.persistentDataPath + "/player.save";
 
         FileStream stream = new FileStream(path, FileMode.Create);
 
@@ -19,7 +18,6 @@ public static class SaveController{
 
     public static PlayerData loadGame() {
         string path = Path.Combine(Application.persistentDataPath, "player.save");
-        // string path = Application.persistentDataPath + "/player.save";
 
         if (File.Exists(path)) {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -30,7 +28,6 @@ public static class SaveController{
 
             return data;
         } else {
-            Debug.LogError("Save file not found in " + path);
             return null;
         }
     }

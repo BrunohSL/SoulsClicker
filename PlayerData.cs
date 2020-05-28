@@ -7,6 +7,8 @@ public class PlayerData {
     public double totalSoulsValue;
     public int totalSoulsScale;
 
+    public string lastTimeOnline;
+
     public int click_level;
     public double click_initialProduction;
     public double click_initialCost;
@@ -43,6 +45,8 @@ public class PlayerData {
         click_nextProductionScale = gameController.click.nextProduction.scale;
         click_nextCostValue = gameController.click.nextCost.value;
         click_nextCostScale = gameController.click.nextCost.scale;
+
+        lastTimeOnline = System.DateTime.Now.ToString();
 
         int counter = 0;
 
