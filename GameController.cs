@@ -59,8 +59,10 @@ public class GameController : MonoBehaviour {
                 offlineEarnings.scale++;
             }
 
-            offlineEarningPanel.SetActive(true);
-            offlineEarningText.GetComponent<Text>().text = "You earned " + offlineEarnings.value.ToString("N2") + currency.suifx[offlineEarnings.scale] + " souls while offline";
+            if (offlineEarnings.value > 0) {
+                offlineEarningPanel.SetActive(true);
+                offlineEarningText.GetComponent<Text>().text = "You earned " + offlineEarnings.value.ToString("N2") + currency.suifx[offlineEarnings.scale] + " souls while offline";
+            }
 
             Debug.Log("Add a unity ads to earn more souls");
         }
