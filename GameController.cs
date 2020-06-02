@@ -89,6 +89,12 @@ public class GameController : MonoBehaviour {
         click.levelText.text = "Lv " + click.level.ToString();
         click.descriptionText.text = click.description;
 
+        if (currency.subtract(souls.totalSouls.value, souls.totalSouls.scale, click.nextCost.value, click.nextCost.scale) == null) {
+            click.upgradeButton.interactable = false;
+        } else {
+            click.upgradeButton.interactable = true;
+        }
+
         foreach (Employees employee in employees) {
             employee.actualProductionText.text = employee.actualProduction.value.ToString("N2") + currency.suifx[employee.actualProduction.scale];
             employee.nextCostText.text = employee.nextCost.value.ToString("N2") + currency.suifx[employee.nextCost.scale];
@@ -96,6 +102,12 @@ public class GameController : MonoBehaviour {
             employee.employeeNameText.text = employee.employeeName;
             employee.employeeLevelText.text = "Lv " + employee.level.ToString();
             employee.employeeDescriptionText.text = employee.description;
+
+            if (currency.subtract(souls.totalSouls.value, souls.totalSouls.scale, employee.nextCost.value, employee.nextCost.scale) == null) {
+                employee.upgradeButton.interactable = false;
+            } else {
+                employee.upgradeButton.interactable = true;
+            }
 
             if (employee.nextCost.value > 1000000) {
                 Debug.Log("employee.nextCost Scale up");

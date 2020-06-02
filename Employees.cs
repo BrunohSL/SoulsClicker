@@ -17,6 +17,8 @@ public class Employees {
     public Value nextProduction;           // Holds the next production value and its scale
     public Value nextCost;                 // Holds the next cost value and its scale
 
+    public Button upgradeButton;
+
     public Text actualProductionText;
     public Text nextCostText;
     public Text nextProductionText;
