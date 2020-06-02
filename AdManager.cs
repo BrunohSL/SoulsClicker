@@ -116,47 +116,46 @@ public class AdManager : MonoBehaviour {
 
     // HANDLE REWARDED VIDEO EVENTS
 
-    public void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
-    {
+    public void HandleRewardBasedVideoLoaded(object sender, EventArgs args) {
         // Video loaded, show it
         displayRewardVideoAd();
     }
 
-    public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
-    {
+    public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args) {
         // Video failed to load, load it again
         requestRewardVideoAd();
     }
 
-    public void HandleRewardBasedVideoOpened(object sender, EventArgs args)
-    {
+    public void HandleRewardBasedVideoOpened(object sender, EventArgs args) {
         // Do something when the video is opened
         // I think i will not use this
     }
 
-    public void HandleRewardBasedVideoStarted(object sender, EventArgs args)
-    {
+    public void HandleRewardBasedVideoStarted(object sender, EventArgs args) {
         // Do something when the video start
         // I think i will not use this
     }
 
-    public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
-    {
+    public void HandleRewardBasedVideoClosed(object sender, EventArgs args) {
         // whe the video is closed
         // i think here the user didnt watched the full video
         // just give the normal offline earnings reward
     }
 
-    public void HandleRewardBasedVideoRewarded(object sender, Reward args)
-    {
-        // Give the player the reward for watching the video
-        // Load the game manager
-        // get the offline earnings
-        // add the double of offline earnings to total souls
+    public void HandleRewardBasedVideoRewarded() {
+        GameObject gameManagerObj = GameObject.FindGameObjectWithTag("gameManager");
+        GameController gameController = gameManagerObj.GetComponent<GameController>();
+
+        gameController.offlineEarningButton(true);
+
+        // switch (type) {
+        //     case "offlineEarnings":
+        //         gameController.doubleOfflineEarnings();
+        //     break;
+        // }
     }
 
-    public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)
-    {
+    public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args) {
         // Check the documentation
         // I think i will not use this
     }

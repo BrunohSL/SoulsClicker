@@ -158,4 +158,20 @@ public class Currency {
             return valueClass;
         }
     }
+
+    public Value multiply(double value, int scale, double multiplier) {
+        Value valueClass = new Value();
+
+        value *= multiplier;
+
+        while (value > 1000000) {
+            value /= 1000000;
+            scale++;
+        }
+
+        valueClass.value = value;
+        valueClass.scale = scale;
+
+        return valueClass;
+    }
 }

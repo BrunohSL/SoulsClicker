@@ -53,6 +53,7 @@ public class GameController : MonoBehaviour {
             Value actualProduction = getEmployeeTotalProduction();
             offlineEarnings.value = double.Parse(diffInSeconds) * actualProduction.value;
             offlineEarnings.scale = actualProduction.scale;
+            offlineEarnings.multiplier = 2;
 
             while (offlineEarnings.value > 1000000) {
                 offlineEarnings.value /= 1000000;
@@ -119,6 +120,10 @@ public class GameController : MonoBehaviour {
             }
         }
 
+        // if (rewardedAdCompleted) {
+
+        // }
+
         time -= Time.deltaTime;
         if (time <= 0) {
             Debug.Log("Gerou alma pelo funcionário");
@@ -159,12 +164,25 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    /**
-     * Handles the button to close the pop up of offline earnings
-     * If closed, gives the player the offline amount
-     * If the player watch the ads give the value * 2 (NOT IMPLEMENTED YET)
-     */
-    public void closeOfflineEarnings() {
+    // /**
+    //  * Handles the button to close the pop up of offline earnings
+    //  * If closed, gives the player the offline amount
+    //  * If the player watch the ads give the value * 2 (NOT IMPLEMENTED YET)
+    //  */
+    // public void closeOfflineEarnings() {
+    //     Value valueClass = new Value();
+
+    //     valueClass = currency.add(souls.totalSouls.value, souls.totalSouls.scale, offlineEarnings.value, offlineEarnings.scale);
+
+    //     souls.totalSouls.value = valueClass.value;
+    //     souls.totalSouls.scale = valueClass.scale;
+
+    //     offlineEarningPanel.SetActive(false);
+    // }
+
+
+
+    public void addOfflineEarnings() {
         Value valueClass = new Value();
 
         valueClass = currency.add(souls.totalSouls.value, souls.totalSouls.scale, offlineEarnings.value, offlineEarnings.scale);
@@ -174,6 +192,34 @@ public class GameController : MonoBehaviour {
 
         offlineEarningPanel.SetActive(false);
     }
+
+    public void doubleOfflineEarnings() {
+        Value valueClass = new Value();
+
+        Debug.Log("offlineEarnings.value: " + offlineEarnings.value);
+        Debug.Log("offlineEarnings.scale: " + offlineEarnings.scale);
+
+        valueClass = currency.multiply(offlineEarnings.value, offlineEarnings.scale, 2);
+
+        Debug.Log("valueClass.value: " + valueClass.value);
+        Debug.Log("valueClass.scale: " + valueClass.scale);
+
+        offlineEarnings.value = valueClass.value;
+        offlineEarnings.scale = valueClass.scale;
+    }
+
+    public void offlineEarningButton(bool reward = false) {
+        if (reward) {
+            doubleOfflineEarnings();
+        }
+        addOfflineEarnings();
+    }
+
+    // if option = close;
+    // Adiciona o offline earnings no total de almas
+    // if option = rewardedAd;
+    // gera o dobro do valor de offline earnings
+    // adiciona o novo valor ao total de almas
 
     /**
      * Run through the employees array and return the sum of all employees actual production values
@@ -336,6 +382,8 @@ public class GameController : MonoBehaviour {
      */
     public void levelUpClick() {
         Value valueClass = new Value();
+
+        valueClass = currency.subtract(souls.totalSouls.value, souls.totalSouls.scale, click.nextCost.value, click.nextCost.scale);
 
         if (valueClass == null) {
             Debug.Log("Valor negativo aqui (valor de custo do próximo upgrade é muito caro)");
