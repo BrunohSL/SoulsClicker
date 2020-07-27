@@ -34,12 +34,35 @@ public class GameController : MonoBehaviour {
                 employee.nextProduction.scale = 0;
 
                 employee.actualProduction.value = employee.initialProduction;
-                employee.nextCost.value = double.Parse(getNextUpgradeCost(employee.initialCost, employee.growthRate, employee.level));
+
+                employee.nextCost.value = employee.initialCost;
+                employee.nextCost.scale = 0;
+
+                // Value employeeNextCost = new Value();
+                // employeeNextCost = getNextUpgradeCost(employee.initialCost, employee.growthRate, employee.level);
+
+                // employee.nextCost.value = employeeNextCost.value;
+
+                // if (employeeNextCost.scale > 0) {
+                //     employee.nextCost.scale++;
+                // }
             }
 
             click.actualProduction.value = click.initialProduction;
             click.actualProduction.scale = 0;
-            click.nextCost.value = double.Parse(getNextUpgradeCost(click.initialCost, click.growthRate, click.level));
+
+            click.nextCost.value = click.initialCost;
+            click.nextCost.scale = 0;
+
+            // Value clickNextCost = new Value();
+            // clickNextCost = getNextUpgradeCost(click.initialCost, click.growthRate, click.level);
+
+            // click.nextCost.value = clickNextCost.value;
+
+            // if (clickNextCost.scale > 0) {
+            //     click.nextCost.scale++;
+            // }
+
             if (click.level == 0) {
                 click.nextProduction.value = click.initialProduction;
             } else {
@@ -107,10 +130,10 @@ public class GameController : MonoBehaviour {
                 employee.upgradeButton.interactable = true;
             }
 
-            if (employee.nextCost.value > 1000000) {
-                employee.nextCost.value /= 1000000;
-                employee.nextCost.scale++;
-            }
+            // if (employee.nextCost.value > 1000000) {
+            //     employee.nextCost.value /= 1000000;
+            //     employee.nextCost.scale++;
+            // }
 
             if (employee.actualProduction.value > 1000000) {
                 employee.actualProduction.value /= 1000000;
@@ -197,6 +220,7 @@ public class GameController : MonoBehaviour {
         if (reward) {
             doubleOfflineEarnings();
         }
+
         addOfflineEarnings();
     }
 
@@ -280,12 +304,22 @@ public class GameController : MonoBehaviour {
      * @param double growthRate  the coefficient used to increase the next upgrade value for each level up
      * @param double level       click level or employee level
      *
-     * @return string nextCost
+     * @return Value nextCost
      */
-    private string getNextUpgradeCost(double initialCost, double growthRate, int level) {
-        double nextCost = initialCost * (Mathf.Pow((float)growthRate, level));
+    private Value getNextUpgradeCost(double initialCost, double growthRate, int level, int scale) {
+        Value nextCost = new Value();
+        nextCost.scale = scale;
 
-        return nextCost.ToString("N2");
+        double nextCostValue = initialCost * (Mathf.Pow((float)growthRate, level));
+        nextCost.value = nextCostValue;
+
+        if (nextCost.value > 1000000) {
+            Debug.Log("Subiu scale do próximo custo");
+            nextCost.value /= 1000000;
+            nextCost.scale++;
+        }
+
+        return nextCost;
     }
 
     /**
@@ -345,7 +379,16 @@ public class GameController : MonoBehaviour {
             employee.level++;
 
             employee.nextProduction.value = double.Parse(getNextProductionRate(employee.initialProduction, employee.level));
-            employee.nextCost.value = double.Parse(getNextUpgradeCost(employee.initialCost, employee.growthRate, employee.level));
+
+            Value employeeNextCost = new Value();
+            employeeNextCost = getNextUpgradeCost(employee.initialCost, employee.growthRate, employee.level, employee.nextCost.scale);
+
+            employee.nextCost.value = employeeNextCost.value;
+            employee.nextCost.scale = employeeNextCost.scale;
+
+            // if (employeeNextCost.scale > 0) {
+            //     employee.nextCost.scale++;
+            // }
         }
     }
 
@@ -374,7 +417,20 @@ public class GameController : MonoBehaviour {
             click.level++;
 
             click.nextProduction.value = double.Parse(getNextProductionRate(click.initialProduction, click.level));
-            click.nextCost.value = double.Parse(getNextUpgradeCost(click.initialCost, click.growthRate, click.level));
+
+            Value clickNextCost = new Value();
+            clickNextCost = getNextUpgradeCost(click.initialCost, click.growthRate, click.level, click.nextCost.scale);
+
+            click.nextCost.value = clickNextCost.value;
+            click.nextCost.scale = clickNextCost.scale;
+
+            Debug.Log("clickNextCost.value: " + clickNextCost.value);
+            Debug.Log("clickNextCost.scale: " + clickNextCost.scale);
+
+            // if (clickNextCost.scale > 0) {
+            //     Debug.Log("Entrou aqui");
+            //     click.nextCost.scale++;
+            // }
         }
     }
 
@@ -414,15 +470,16 @@ public class GameController : MonoBehaviour {
             click.nextProduction.scale++;
         }
 
-        if (click.nextCost.value > 1000000) {
-            click.nextCost.value /= 1000000;
-            click.nextCost.scale++;
-        }
+        // if (click.nextCost.value > 1000000) {
+        //     Debug.Log("Subiu scale do próximo custo");
+        //     click.nextCost.value /= 1000000;
+        //     click.nextCost.scale++;
+        // }
 
-        if (click.nextCost.value > 1000000) {
-            click.nextCost.value /= 1000000;
-            click.nextCost.scale++;
-        }
+        // if (click.nextCost.value > 1000000) {
+        //     click.nextCost.value /= 1000000;
+        //     click.nextCost.scale++;
+        // }
 
         soulsText.text = "Souls: " + souls.totalSouls.value.ToString("N2") + currency.suifx[souls.totalSouls.scale];
     }
