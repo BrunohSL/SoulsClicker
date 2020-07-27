@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -52,16 +52,12 @@ public class Currency {
             int scaleDiff = totalSoulsScale - valueScale;
 
             if (scaleDiff < -2 || scaleDiff > 2) {
-                Debug.Log("Diferença de scale é maior que 2");
-
                 if (scaleDiff > 0) {
-                    Debug.Log("Faz de conta que somou");
                     valueClass.value = double.Parse(totalSouls.ToString("N3"));
                     valueClass.scale = totalSoulsScale;
 
                     return valueClass;
                 } else {
-                    Debug.Log("Considerando o adicionado como total");
                     valueClass.value = value;
                     valueClass.scale = valueScale;
 
@@ -69,7 +65,6 @@ public class Currency {
                 }
             }
 
-            Debug.Log("diferente");
             if (totalSoulsScale > valueScale) {
                 if (totalSoulsScale > 0) {
                     totalSoulsScale--;
@@ -79,7 +74,6 @@ public class Currency {
             }
 
             if (totalSoulsScale < valueScale) {
-                Debug.Log("Valor que está sendo adicionado no click é maior que o total de almas");
                 if (valueScale > 0) {
                     valueScale--;
                     value *= 1000000;
@@ -89,7 +83,6 @@ public class Currency {
 
             return valueClass;
         } else {
-            Debug.Log("Mesmo scale, somando valores aqui");
             totalSouls += value;
 
             valueClass.value = double.Parse(totalSouls.ToString("N3"));
@@ -114,14 +107,11 @@ public class Currency {
         Value valueClass = new Value();
 
         if (totalSoulsScale != valueScale) {
-            Debug.Log("Passou aqui");
             int scaleDiff = totalSoulsScale - valueScale;
 
             if (scaleDiff < -2 || scaleDiff > 2) {
-                Debug.Log("Diferença de scale é maior que 2");
 
                 if (scaleDiff > 0) {
-                    Debug.Log("Faz de conta que subtraiu");
                     valueClass.value = double.Parse(totalSouls.ToString("N3"));
                     valueClass.scale = totalSoulsScale;
 
@@ -138,18 +128,14 @@ public class Currency {
             }
 
             if (totalSoulsScale < valueScale) {
-                Debug.Log("Valor negativo aqui (scale do valor é maior que o scale do total de almas)");
                 return null;
             }
 
             return valueClass;
         } else {
-            Debug.Log("Scales iguais");
             if ((totalSouls - value) < 0) {
-                Debug.Log("Valor negativo aqui (scales iguais)");
                 return null;
             } else {
-                Debug.Log("Entrou aqui");
                 totalSouls -= value;
                 valueClass.value = totalSouls;
                 valueClass.scale = totalSoulsScale;

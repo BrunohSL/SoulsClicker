@@ -64,8 +64,6 @@ public class GameController : MonoBehaviour {
                 offlineEarningPanel.SetActive(true);
                 offlineEarningText.GetComponent<Text>().text = "You earned " + offlineEarnings.value.ToString("N2") + currency.suifx[offlineEarnings.scale] + " souls while offline";
             }
-
-            Debug.Log("Add a unity ads to earn more souls");
         }
 
         foreach (Employees employee in employees) {
@@ -110,19 +108,16 @@ public class GameController : MonoBehaviour {
             }
 
             if (employee.nextCost.value > 1000000) {
-                Debug.Log("employee.nextCost Scale up");
                 employee.nextCost.value /= 1000000;
                 employee.nextCost.scale++;
             }
 
             if (employee.actualProduction.value > 1000000) {
-                Debug.Log("employee.actualProduction Scale up");
                 employee.actualProduction.value /= 1000000;
                 employee.actualProduction.scale++;
             }
 
             if (employee.nextProduction.value > 1000000) {
-                Debug.Log("employee.nextProduction Scale up");
                 employee.nextProduction.value /= 1000000;
                 employee.nextProduction.scale++;
             }
@@ -132,13 +127,8 @@ public class GameController : MonoBehaviour {
             }
         }
 
-        // if (rewardedAdCompleted) {
-
-        // }
-
         time -= Time.deltaTime;
         if (time <= 0) {
-            Debug.Log("Gerou alma pelo funcionário");
             Value totalProduction = getEmployeeTotalProduction();
             Value valueClass = currency.add(souls.totalSouls.value, souls.totalSouls.scale, totalProduction.value, totalProduction.scale);
 
@@ -152,8 +142,6 @@ public class GameController : MonoBehaviour {
             souls.totalSouls.scale = valueClass.scale;
             time = 1f;
         }
-
-        debug();
     }
 
     void FixedUpdate() {
@@ -163,16 +151,9 @@ public class GameController : MonoBehaviour {
     void debug() {
         if (Input.GetKeyDown(KeyCode.T)) {
             string today = System.DateTime.Now.ToString();
-
-            Debug.Log("today: " + today);
-
             string tomorrow = System.DateTime.Parse(today).AddDays(1).ToString();
 
-            Debug.Log("tomorrow: " + tomorrow);
-
             var diffInSeconds = (System.DateTime.Parse(tomorrow) - System.DateTime.Parse(today)).TotalSeconds;
-
-            Debug.Log("diffInSeconds: " + diffInSeconds);
         }
     }
 
@@ -192,8 +173,6 @@ public class GameController : MonoBehaviour {
     //     offlineEarningPanel.SetActive(false);
     // }
 
-
-
     public void addOfflineEarnings() {
         Value valueClass = new Value();
 
@@ -208,13 +187,7 @@ public class GameController : MonoBehaviour {
     public void doubleOfflineEarnings() {
         Value valueClass = new Value();
 
-        Debug.Log("offlineEarnings.value: " + offlineEarnings.value);
-        Debug.Log("offlineEarnings.scale: " + offlineEarnings.scale);
-
         valueClass = currency.multiply(offlineEarnings.value, offlineEarnings.scale, 2);
-
-        Debug.Log("valueClass.value: " + valueClass.value);
-        Debug.Log("valueClass.scale: " + valueClass.scale);
 
         offlineEarnings.value = valueClass.value;
         offlineEarnings.scale = valueClass.scale;
@@ -226,12 +199,6 @@ public class GameController : MonoBehaviour {
         }
         addOfflineEarnings();
     }
-
-    // if option = close;
-    // Adiciona o offline earnings no total de almas
-    // if option = rewardedAd;
-    // gera o dobro do valor de offline earnings
-    // adiciona o novo valor ao total de almas
 
     /**
      * Run through the employees array and return the sum of all employees actual production values
@@ -369,7 +336,7 @@ public class GameController : MonoBehaviour {
         valueClass = currency.subtract(souls.totalSouls.value, souls.totalSouls.scale, employee.nextCost.value, employee.nextCost.scale);
 
         if (valueClass == null) {
-            Debug.Log("Valor negativo aqui (valor de custo do próximo upgrade é muito caro)");
+            // Debug.Log("Valor negativo aqui (valor de custo do próximo upgrade é muito caro)");
         } else {
             souls.totalSouls.value = valueClass.value;
             souls.totalSouls.scale = valueClass.scale;
@@ -398,7 +365,7 @@ public class GameController : MonoBehaviour {
         valueClass = currency.subtract(souls.totalSouls.value, souls.totalSouls.scale, click.nextCost.value, click.nextCost.scale);
 
         if (valueClass == null) {
-            Debug.Log("Valor negativo aqui (valor de custo do próximo upgrade é muito caro)");
+            // Debug.Log("Valor negativo aqui (valor de custo do próximo upgrade é muito caro)");
         } else {
             souls.totalSouls.value = valueClass.value;
             souls.totalSouls.scale = valueClass.scale;
@@ -433,31 +400,26 @@ public class GameController : MonoBehaviour {
      */
     public void checkForScaleChange() {
         if (souls.totalSouls.value > 1000000) {
-            Debug.Log("souls.totalSouls Scale up");
             souls.totalSouls.value /= 1000000;
             souls.totalSouls.scale++;
         }
 
         if (click.actualProduction.value > 1000000) {
-            Debug.Log("click.actualProduction Scale up");
             click.actualProduction.value /= 1000000;
             click.actualProduction.scale++;
         }
 
         if (click.nextProduction.value > 1000000) {
-            Debug.Log("click.nextCost Scale up");
             click.nextProduction.value /= 1000000;
             click.nextProduction.scale++;
         }
 
         if (click.nextCost.value > 1000000) {
-            Debug.Log("click.nextCost Scale up");
             click.nextCost.value /= 1000000;
             click.nextCost.scale++;
         }
 
         if (click.nextCost.value > 1000000) {
-            Debug.Log("click.nextCost Scale up");
             click.nextCost.value /= 1000000;
             click.nextCost.scale++;
         }

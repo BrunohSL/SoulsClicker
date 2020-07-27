@@ -5,26 +5,27 @@ using UnityEngine;
 using GoogleMobileAds.Api;
 
 public class AdManager : MonoBehaviour {
-    private BannerView bannerAd;
     private InterstitialAd interstitialAd;
     private RewardBasedVideoAd rewardVideoAd;
 
     void Start() {
-        MobileAds.Initialize(initStatus => {});
+        MobileAds.Initialize(initStatus => { });
 
-        requestBanner();
+        this.rewardVideoAd = RewardBasedVideoAd.Instance;
+
+        // Called when an ad request has successfully loaded.
+        rewardVideoAd.OnAdLoaded += HandleRewardBasedVideoLoaded;
+        // Called when an ad request failed to load.
+        rewardVideoAd.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
+        // Called when the user should be rewarded for watching a video.
+        rewardVideoAd.OnAdRewarded += HandleRewardBasedVideoRewarded;
+        // Called when the ad is closed.
+        rewardVideoAd.OnAdClosed += HandleRewardBasedVideoClosed;
+        // Called when the ad click caused the user to leave the application.
+        rewardVideoAd.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
+
         requestInterstitial();
         requestRewardVideoAd();
-    }
-
-    void requestBanner() {
-        string bannerId = "ca-app-pub-5735782229237225/8173123708";
-
-        bannerAd = new BannerView(bannerId, AdSize.SmartBanner, AdPosition.Top);
-
-        AdRequest adRequest = new AdRequest.Builder().Build();
-
-        bannerAd.LoadAd(adRequest);
     }
 
     void requestInterstitial() {
@@ -38,17 +39,13 @@ public class AdManager : MonoBehaviour {
     }
 
     void requestRewardVideoAd() {
-        string videoAdId = "ca-app-pub-5735782229237225/9474311675";
+        string videoAdId = "ca-app-pub-5735782229237225/9474311675  ";
 
-        rewardVideoAd = RewardBasedVideoAd.Instance;
+        // rewardVideoAd = RewardBasedVideoAd.Instance;
 
         AdRequest adRequest = new AdRequest.Builder().Build();
 
-        rewardVideoAd.LoadAd(adRequest, videoAdId);
-    }
-
-    public void displayBanner() {
-        bannerAd.Show();
+        this.rewardVideoAd.LoadAd(adRequest, videoAdId);
     }
 
     public void displayInterstitialAd() {
@@ -58,59 +55,8 @@ public class AdManager : MonoBehaviour {
     }
 
     public void displayRewardVideoAd() {
-        if (rewardVideoAd.IsLoaded()) {
-            rewardVideoAd.Show();
-        }
-    }
-
-    // HANDLE EVENTS
-
-    public void HandleOnAdLoaded(object sender, EventArgs args) {
-        // Ad is loaded, show it
-        displayBanner();
-    }
-
-    public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args) {
-        // Ad failed to load, load it again
-        requestBanner();
-    }
-
-    public void HandleOnAdOpened(object sender, EventArgs args) {
-        // User clicked on the Ad, what do you want to do?
-    }
-
-    public void HandleOnAdClosed(object sender, EventArgs args) {
-        // When ad is closed, more for intertitial ad
-        // Here th user watched the ad, see how to reward the player
-    }
-
-    public void HandleOnAdLeavingApplication(object sender, EventArgs args) {
-        // He didnt explained in the video, read the documentation
-    }
-
-    void handleBannerAdEvents(bool subscribe) {
-        if (subscribe) {
-            // Called when an ad request has successfully loaded.
-            this.bannerAd.OnAdLoaded += this.HandleOnAdLoaded;
-            // Called when an ad request failed to load.
-            this.bannerAd.OnAdFailedToLoad += this.HandleOnAdFailedToLoad;
-            // Called when an ad is clicked.
-            this.bannerAd.OnAdOpening += this.HandleOnAdOpened;
-            // Called when the user returned from the app after an ad click.
-            this.bannerAd.OnAdClosed += this.HandleOnAdClosed;
-            // Called when the ad click caused the user to leave the application.
-            this.bannerAd.OnAdLeavingApplication += this.HandleOnAdLeavingApplication;
-        } else {
-            // Called when an ad request has successfully loaded.
-            this.bannerAd.OnAdLoaded -= this.HandleOnAdLoaded;
-            // Called when an ad request failed to load.
-            this.bannerAd.OnAdFailedToLoad -= this.HandleOnAdFailedToLoad;
-            // Called when an ad is clicked.
-            this.bannerAd.OnAdOpening -= this.HandleOnAdOpened;
-            // Called when the user returned from the app after an ad click.
-            this.bannerAd.OnAdClosed -= this.HandleOnAdClosed;
-            // Called when the ad click caused the user to leave the application.
-            this.bannerAd.OnAdLeavingApplication -= this.HandleOnAdLeavingApplication;
+        if (this.rewardVideoAd.IsLoaded()) {
+            this.rewardVideoAd.Show();
         }
     }
 
@@ -142,29 +88,15 @@ public class AdManager : MonoBehaviour {
         // just give the normal offline earnings reward
     }
 
-    public void HandleRewardBasedVideoRewarded() {
+    public void HandleRewardBasedVideoRewarded(object sender, EventArgs args) {
         GameObject gameManagerObj = GameObject.FindGameObjectWithTag("gameManager");
         GameController gameController = gameManagerObj.GetComponent<GameController>();
 
         gameController.offlineEarningButton(true);
-
-        // switch (type) {
-        //     case "offlineEarnings":
-        //         gameController.doubleOfflineEarnings();
-        //     break;
-        // }
     }
 
     public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args) {
         // Check the documentation
         // I think i will not use this
-    }
-
-    void OnEnable() {
-        handleBannerAdEvents(true);
-    }
-
-    void OnDisable() {
-        handleBannerAdEvents(false);
     }
 }

@@ -18,6 +18,7 @@ public static class SaveController{
 
     public static PlayerData loadGame() {
         string path = Path.Combine(Application.persistentDataPath, "player.save");
+        Debug.Log(path);
 
         if (File.Exists(path)) {
             BinaryFormatter formatter = new BinaryFormatter();
