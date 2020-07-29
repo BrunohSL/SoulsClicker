@@ -37,15 +37,6 @@ public class GameController : MonoBehaviour {
 
                 employee.nextCost.value = employee.initialCost;
                 employee.nextCost.scale = 0;
-
-                // Value employeeNextCost = new Value();
-                // employeeNextCost = getNextUpgradeCost(employee.initialCost, employee.growthRate, employee.level);
-
-                // employee.nextCost.value = employeeNextCost.value;
-
-                // if (employeeNextCost.scale > 0) {
-                //     employee.nextCost.scale++;
-                // }
             }
 
             click.actualProduction.value = click.initialProduction;
@@ -53,15 +44,6 @@ public class GameController : MonoBehaviour {
 
             click.nextCost.value = click.initialCost;
             click.nextCost.scale = 0;
-
-            // Value clickNextCost = new Value();
-            // clickNextCost = getNextUpgradeCost(click.initialCost, click.growthRate, click.level);
-
-            // click.nextCost.value = clickNextCost.value;
-
-            // if (clickNextCost.scale > 0) {
-            //     click.nextCost.scale++;
-            // }
 
             if (click.level == 0) {
                 click.nextProduction.value = click.initialProduction;
