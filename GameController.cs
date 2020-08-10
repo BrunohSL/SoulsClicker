@@ -290,7 +290,7 @@ public class GameController : MonoBehaviour {
      */
     private Value getNextUpgradeCost(double initialCost, double growthRate, int level, int scale) {
         Value nextCost = new Value();
-        nextCost.scale = scale;
+        nextCost.scale = 0;
 
         double nextCostValue = initialCost * (Mathf.Pow((float)growthRate, level));
         nextCost.value = nextCostValue;
