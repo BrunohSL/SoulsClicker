@@ -112,11 +112,6 @@ public class GameController : MonoBehaviour {
                 employee.upgradeButton.interactable = true;
             }
 
-            // if (employee.nextCost.value > 1000000) {
-            //     employee.nextCost.value /= 1000000;
-            //     employee.nextCost.scale++;
-            // }
-
             if (employee.actualProduction.value > 1000000) {
                 employee.actualProduction.value /= 1000000;
                 employee.actualProduction.scale++;
@@ -367,10 +362,6 @@ public class GameController : MonoBehaviour {
 
             employee.nextCost.value = employeeNextCost.value;
             employee.nextCost.scale = employeeNextCost.scale;
-
-            // if (employeeNextCost.scale > 0) {
-            //     employee.nextCost.scale++;
-            // }
         }
     }
 
@@ -408,11 +399,6 @@ public class GameController : MonoBehaviour {
 
             Debug.Log("clickNextCost.value: " + clickNextCost.value);
             Debug.Log("clickNextCost.scale: " + clickNextCost.scale);
-
-            // if (clickNextCost.scale > 0) {
-            //     Debug.Log("Entrou aqui");
-            //     click.nextCost.scale++;
-            // }
         }
     }
 
@@ -451,17 +437,6 @@ public class GameController : MonoBehaviour {
             click.nextProduction.value /= 1000000;
             click.nextProduction.scale++;
         }
-
-        // if (click.nextCost.value > 1000000) {
-        //     Debug.Log("Subiu scale do próximo custo");
-        //     click.nextCost.value /= 1000000;
-        //     click.nextCost.scale++;
-        // }
-
-        // if (click.nextCost.value > 1000000) {
-        //     click.nextCost.value /= 1000000;
-        //     click.nextCost.scale++;
-        // }
 
         soulsText.text = "Souls: " + souls.totalSouls.value.ToString("N2") + currency.suifx[souls.totalSouls.scale];
     }
