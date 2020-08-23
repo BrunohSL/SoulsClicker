@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
     private float time = 1f;
-
     public string lastTimeOnline;
 
     public Value offlineEarnings;
@@ -19,6 +18,8 @@ public class GameController : MonoBehaviour {
     public Text soulsText;
     public GameObject clickTextPrefab;
     public Canvas canvas;
+
+    public bool isShopOpen = false;
 
     void Start() {
         PlayerData data = SaveController.loadGame();
@@ -132,7 +133,7 @@ public class GameController : MonoBehaviour {
             Value totalProduction = getEmployeeTotalProduction();
             Value valueClass = currency.add(souls.totalSouls.value, souls.totalSouls.scale, totalProduction.value, totalProduction.scale);
 
-            if (totalProduction.value > 0) {
+            if (totalProduction.value > 0 && !isShopOpen) {
                 GameObject clickTextPrefabObj = Instantiate(clickTextPrefab, new Vector3(Random.Range(-20f, 100f), Random.Range(0f, 70f), 0f), Quaternion.identity);
                 clickTextPrefabObj.transform.SetParent(canvas.transform, false);
                 clickTextPrefabObj.GetComponent<Text>().text = "+ " + totalProduction.value.ToString("N2") + currency.suifx[souls.totalSouls.scale];
@@ -146,6 +147,10 @@ public class GameController : MonoBehaviour {
 
     void FixedUpdate() {
         saveGame();
+    }
+
+    public void setIsShopOpen(bool isOpen) {
+        this.isShopOpen = isOpen;
     }
 
     void debug() {
